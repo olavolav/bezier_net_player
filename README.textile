@@ -1,0 +1,5 @@
+h1. bezier_net_player
+
+Creates a network of Bezier-shaped neurons according to their actual connectivity and displays their pseudo-fluorescence activity. Can act as a simple drum machine.
+
+Written in "Processing":http://processing.org/
