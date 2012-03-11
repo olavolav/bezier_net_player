@@ -67,7 +67,7 @@ class Neuron
     } else {
       colorMode(HSB, 100);
       // tint(round(random(100)),100,100);
-      tint(int(100.*float(posx)/screen.width),100,100);
+      tint(int(100.*float(posx)/screen.width),50,100,100);
       fill(int(100.*float(posx)/screen.width),100,100,10);
       colorMode(RGB, 255);
     }
