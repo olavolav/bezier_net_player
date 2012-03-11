@@ -66,21 +66,25 @@ class Neuron
       tint(neuron_color,100);
     } else {
       colorMode(HSB, 100);
-      tint(round(random(100)),100,100);
+      // tint(round(random(100)),100,100);
+      tint(int(100.*float(posx)/screen.width),100,100);
+      fill(int(100.*float(posx)/screen.width),100,100,10);
       colorMode(RGB, 255);
     }
     smooth();
     image(cell,posx+x_offset+deviatex,posy+y_offset+deviatey);
 
-    // ellipseMode(CENTER);
-    // noSmooth();
-    // fill(neuron_color,10);
-    // noStroke();
-    // ellipse(posx+int(deviatex), posy+int(deviatey), 5*nradius*(random(1.0)+0.5), 5*nradius*(random(1.0)+0.5));
-    // ellipse(posx+int(deviatex), posy+int(deviatey), 10*nradius*(random(1.0)+0.5), 10*nradius*(random(1.0)+0.5));
-    // ellipse(posx+int(deviatex), posy+int(deviatey), 20*nradius*(random(1.0)+0.5), 20*nradius*(random(1.0)+0.5)); 
-    // ellipse(posx+int(deviatex), posy+int(deviatey), 7, 7); // middle of neuron
-
+    if(randomize_colors) {
+      ellipseMode(CENTER);
+      noSmooth();
+      // fill(neuron_color,10);
+      noStroke();
+      ellipse(posx+int(deviatex), posy+int(deviatey), 5*nradius*(random(1.0)+0.5), 5*nradius*(random(1.0)+0.5));
+      ellipse(posx+int(deviatex), posy+int(deviatey), 10*nradius*(random(1.0)+0.5), 10*nradius*(random(1.0)+0.5));
+      ellipse(posx+int(deviatex), posy+int(deviatey), 20*nradius*(random(1.0)+0.5), 20*nradius*(random(1.0)+0.5)); 
+      // ellipse(posx+int(deviatex), posy+int(deviatey), 7, 7); // middle of neuron
+    }
+    
     // imageMode(CENTER);
     noSmooth();
     // 1. outer copy

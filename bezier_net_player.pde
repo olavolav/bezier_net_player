@@ -26,7 +26,9 @@ int newcurve = 5000;
 
 int sound;
 long frame_counter = 0;
-float ms_per_frame = 4.0;
+int frames_per_second = 15;
+// float ms_per_frame = 4.0;
+float ms_per_frame = 1000./float(frames_per_second); // display in real time;
 float actual_time = 0.0;
 float last_spike_time;
 
@@ -58,7 +60,7 @@ boolean[] has_fired_in_this_frame = new boolean[nnumber];
 
 void setup()
 {
-  frameRate(18);
+  frameRate(frames_per_second);
   strokeWeight(8);
   
   textFont(createFont("LucidaGrande", 26));
@@ -141,7 +143,7 @@ void setup()
 void draw()
 {
   // better_blenddown();
-  simple_blenddown(3);
+  simple_blenddown(3+3);
 
   frame_counter += 1;
   actual_time = frame_counter*ms_per_frame;
@@ -253,7 +255,11 @@ void simple_blenddown(int alpha)
 {
   noSmooth();
   noStroke();
-  fill(background_color, alpha);
+  if(!randomize_colors) {
+    fill(background_color, alpha);
+  } else {
+    fill(color(#000000), alpha);
+  }
   rect(0, 0, width, height);
   smooth();
 }
