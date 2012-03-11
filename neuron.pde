@@ -2,9 +2,6 @@
 class Neuron
 {
   int posx, posy;
-  float deviatex, deviatey;
-  // float relaxtime;
-  // float pot;
   PGraphics cell, noise_image;
   int[] out_connections;
   // offset for displaying sprite
@@ -16,9 +13,6 @@ class Neuron
   {
     posx = posxtemp;
     posy = posytemp;
-    // relaxtime = 100;
-    // pot = random(0.9);
-    deviatex = deviatey = 0.0;
     cell = null;
     noise_image = null;
     out_connections = null;
@@ -30,14 +24,13 @@ class Neuron
   {
     posx = posxtemp;
     posy = posytemp;
-    deviatex = deviatey = 0.0;
   }
   
   int getPosX()
-  { return posx+int(deviatex); }
+  { return posx; }
   
   int getPosY()
-  { return posy+int(deviatey); }
+  { return posy; }
 
   void setConnections(int[] cons)
   { out_connections = cons; }
@@ -45,20 +38,6 @@ class Neuron
   int[] getConnections()
   { return out_connections; }
 
-  void display() {
-    fill(passive_neuron_color,4);
-    noStroke();
-    ellipseMode(CENTER);
-    deviatex = random(nblurradius) - nblurradius/2;
-    deviatey = random(nblurradius) - nblurradius/2;
-    ellipse(posx+int(deviatex), posy+int(deviatey), nradius*(random(1.0)+0.5), nradius*(random(1.0)+0.5));
-
-    imageMode(CORNER);
-    smooth();
-    tint(passive_neuron_color,4);
-    image(cell,posx+x_offset+deviatex,posy+y_offset+deviatey);
-  }
-  
   void blink()
   {
     imageMode(CORNER);
@@ -72,26 +51,26 @@ class Neuron
       colorMode(RGB, 255);
     }
     smooth();
-    image(cell,posx+x_offset+deviatex,posy+y_offset+deviatey);
+    image(cell,posx+x_offset,posy+y_offset);
 
     if(randomize_colors) {
       ellipseMode(CENTER);
       noSmooth();
       // fill(neuron_color,10);
       noStroke();
-      ellipse(posx+int(deviatex), posy+int(deviatey), 5*nradius*(random(1.0)+0.5), 5*nradius*(random(1.0)+0.5));
-      ellipse(posx+int(deviatex), posy+int(deviatey), 10*nradius*(random(1.0)+0.5), 10*nradius*(random(1.0)+0.5));
-      ellipse(posx+int(deviatex), posy+int(deviatey), 20*nradius*(random(1.0)+0.5), 20*nradius*(random(1.0)+0.5)); 
-      // ellipse(posx+int(deviatex), posy+int(deviatey), 7, 7); // middle of neuron
+      ellipse(posx, posy, 5*nradius*(random(1.0)+0.5), 5*nradius*(random(1.0)+0.5));
+      ellipse(posx, posy, 10*nradius*(random(1.0)+0.5), 10*nradius*(random(1.0)+0.5));
+      ellipse(posx, posy, 20*nradius*(random(1.0)+0.5), 20*nradius*(random(1.0)+0.5)); 
+      // ellipse(posx, posy, 7, 7); // middle of neuron
     }
     
     // imageMode(CENTER);
     noSmooth();
     // 1. outer copy
-    image(noise_image, posx+deviatex+noise_scaling_factor*x_offset, posy+deviatey+noise_scaling_factor*y_offset, noise_scaling_factor*noise_image.width, noise_scaling_factor*noise_image.height);
+    image(noise_image, posx+noise_scaling_factor*x_offset, posy+noise_scaling_factor*y_offset, noise_scaling_factor*noise_image.width, noise_scaling_factor*noise_image.height);
     // 2. inner copy
     // tint(color(#ffffff),100);
-    // image(noise_image,posx+x_offset+deviatex,posy+y_offset+deviatey);
+    // image(noise_image,posx+x_offset,posy+y_offset);
 
     smooth();
     noTint();
