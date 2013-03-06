@@ -8,12 +8,11 @@ import ddf.minim.*;
 Minim minim;
 AudioSample[] click = new AudioSample[2];
 
-color passive_neuron_color = #D4FF6A;
-color neuron_color = #EFF7CF;
-color background_color = #044304;
-// color background_color = #000000;
-int nnumber = 100;
-int cnumber = 1209;
+color NEURON_COLOR = #EFF7CF;
+color BACKGROUND_COLOR = #044304;
+// color BACKGROUND_COLOR = #000000;
+int NUMBER_OF_NEURONS = 100;
+int NUMBER_OF_CONNECTIONS = 1209;
 int fired = 0;
 float nradius;
 float nblurradius;
@@ -26,9 +25,9 @@ int newcurve = 5000;
 
 int sound;
 long frame_counter = 0;
-int frames_per_second = 15;
-float ms_per_frame = 10.0;
-// float ms_per_frame = 1000./float(frames_per_second); // display in real time;
+int FRAMES_PER_SECOND = 15;
+float MS_PER_FRAME = 10.0;
+// float MS_PER_FRAME = 1000./float(FRAMES_PER_SECOND); // display in real time;
 float actual_time = 0.0;
 
 String SPIKE_INDEX_FILENAME = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_index_net1_cc0_p0_w0.dat";
@@ -40,21 +39,20 @@ boolean displayactivitycurve = true;
 boolean act_as_drum_machine = false;
 boolean randomize_colors = false;
 
-float fraction_of_shown_connections = 0.66;
-float scale_axon_length = 0.33;
-// float blink_size_factor = 1.8;
+float FRACTION_OF_CONNECTIONS_SHOWN = 0.66;
+float SCALE_FACTOR_OF_AXON_LENGTH = 0.33;
 
 int i, j, k;
 Neuron n1, n2;
-Neuron[] net = new Neuron[nnumber];
-int[] cfrom = new int[cnumber];
-int[] cto = new int[cnumber];
-boolean[] has_fired_in_this_frame = new boolean[nnumber];
+Neuron[] net = new Neuron[NUMBER_OF_NEURONS];
+int[] cfrom = new int[NUMBER_OF_CONNECTIONS];
+int[] cto = new int[NUMBER_OF_CONNECTIONS];
+boolean[] has_fired_in_this_frame = new boolean[NUMBER_OF_NEURONS];
 // PGraphics noise_image;
 
 void setup()
 {
-  frameRate(frames_per_second);
+  frameRate(FRAMES_PER_SECOND);
   strokeWeight(8);
   
   textFont(createFont("LucidaGrande", 26));
@@ -64,7 +62,7 @@ void setup()
   nradius = width/150.0;
   nblurradius = width/250.0;
   smooth();
-  background(background_color);
+  background(BACKGROUND_COLOR);
 
   /* println("initializing movie for export ...");
   mm = new MovieMaker(this, width, height, "/Users/olav/Desktop/bezier_net1.mov", 15); */
@@ -85,7 +83,7 @@ void setup()
   println("loading "+path+"pos_processing.txt ...");
   String[] input=loadStrings(path+"pos_processing.txt");
   
-  for (i=0; i<nnumber; i++)
+  for (i=0; i<NUMBER_OF_NEURONS; i++)
     net[i] = new Neuron(round(float(input[2*i])*(width-2*border))+border,
       round(float(input[2*i+1])*(height-2*border)+border));
 
@@ -94,29 +92,29 @@ void setup()
   String[] cinput=loadStrings(path+"cons_processing.txt");
   if (cinput==null) exit();
   
-  for (i=0; i<cnumber; i++) {
+  for (i=0; i<NUMBER_OF_CONNECTIONS; i++) {
     cfrom[i] = int(cinput[3*i])-1;
     cto[i] = int(cinput[3*i+1])-1;
   }
 
   // set internal connection arrays and create PGraphics shapes
   println("creating cell sprites ...");
-  for (i=0; i<nnumber; i++) {
+  for (i=0; i<NUMBER_OF_NEURONS; i++) {
     int[] x2s = new int[0];
     int[] y2s = new int[0];
-    for (j=0; j<cnumber; j++) {
-      if ((cfrom[j]==i)&&(random(1.0)<fraction_of_shown_connections)) {
+    for (j=0; j<NUMBER_OF_CONNECTIONS; j++) {
+      if ((cfrom[j]==i)&&(random(1.0)<FRACTION_OF_CONNECTIONS_SHOWN)) {
         x2s = append(x2s, net[cto[j]].getPosX());
         y2s = append(y2s, net[cto[j]].getPosY());
       }
     }
-    net[i].create_cell_shape(x2s, y2s, neuron_color);
+    net[i].create_cell_shape(x2s, y2s, NEURON_COLOR);
   }
   println("creating noise sprites ...");
-  for (i=0; i<nnumber; i++) {
+  for (i=0; i<NUMBER_OF_NEURONS; i++) {
     net[i].create_noise_shape(width/5,height/5); //(400,400);
   }
-  for (i=0; i<nnumber; i++) {
+  for (i=0; i<NUMBER_OF_NEURONS; i++) {
     net[i].blink();
   }
 
@@ -135,13 +133,13 @@ void draw()
   simple_blenddown(3+3);
 
   frame_counter += 1;
-  actual_time = frame_counter*ms_per_frame;
+  actual_time = frame_counter*MS_PER_FRAME;
   
-  // net[int(frame_counter % nnumber)].display();
+  // net[int(frame_counter % NUMBER_OF_NEURONS)].display();
 
   // clear firing history of this frame
   fired = 0;
-  for (i=0; i<nnumber; i++) {
+  for (i=0; i<NUMBER_OF_NEURONS; i++) {
     has_fired_in_this_frame[i] = false;
   }
   
@@ -166,7 +164,7 @@ void draw()
   // display activity
   if(displayactivitycurve)
   {
-    stroke(neuron_color, 200);
+    stroke(NEURON_COLOR, 200);
     strokeWeight(3);
     newcurve = int(height*0.9-3*fired+0*(random(5)-3));
     line(rolling, oldcurve, rolling+3, newcurve);
@@ -232,7 +230,7 @@ void simple_blenddown(int alpha)
   noSmooth();
   noStroke();
   if(!randomize_colors) {
-    fill(background_color, alpha);
+    fill(BACKGROUND_COLOR, alpha);
   } else {
     fill(color(#000000), alpha);
   }

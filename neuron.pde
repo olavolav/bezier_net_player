@@ -42,7 +42,7 @@ class Neuron
   {
     imageMode(CORNER);
     if(!randomize_colors) {
-      tint(neuron_color,100);
+      tint(NEURON_COLOR,100);
     } else {
       colorMode(HSB, 100);
       // tint(round(random(100)),100,100);
@@ -56,7 +56,7 @@ class Neuron
     if(randomize_colors) {
       ellipseMode(CENTER);
       noSmooth();
-      // fill(neuron_color,10);
+      // fill(NEURON_COLOR,10);
       noStroke();
       ellipse(posx, posy, 5*nradius*(random(1.0)+0.5), 5*nradius*(random(1.0)+0.5));
       ellipse(posx, posy, 10*nradius*(random(1.0)+0.5), 10*nradius*(random(1.0)+0.5));
@@ -171,10 +171,10 @@ class Neuron
 
     // draw actual cell shape (assuming connections>2)
     cell.beginShape(POLYGON);
-    cell.vertex((1-scale_axon_length)*posx+scale_axon_length*x2sorted[0]-ximageshift, (1-scale_axon_length)*posy+scale_axon_length*y2sorted[0]-yimageshift);
+    cell.vertex((1-SCALE_FACTOR_OF_AXON_LENGTH)*posx+SCALE_FACTOR_OF_AXON_LENGTH*x2sorted[0]-ximageshift, (1-SCALE_FACTOR_OF_AXON_LENGTH)*posy+SCALE_FACTOR_OF_AXON_LENGTH*y2sorted[0]-yimageshift);
     for (int i=0; i<nr_connections-1; i++)
-      cell.bezierVertex(posx-ximageshift, posy-yimageshift, posx-ximageshift, posy-yimageshift, (1-scale_axon_length)*posx+scale_axon_length*x2sorted[i+1]-ximageshift, (1-scale_axon_length)*posy+scale_axon_length*y2sorted[i+1]-yimageshift);
-    cell.bezierVertex(posx-ximageshift, posy-yimageshift, posx-ximageshift, posy-yimageshift, (1-scale_axon_length)*posx+scale_axon_length*x2sorted[0]-ximageshift, (1-scale_axon_length)*posy+scale_axon_length*y2sorted[0]-yimageshift);
+      cell.bezierVertex(posx-ximageshift, posy-yimageshift, posx-ximageshift, posy-yimageshift, (1-SCALE_FACTOR_OF_AXON_LENGTH)*posx+SCALE_FACTOR_OF_AXON_LENGTH*x2sorted[i+1]-ximageshift, (1-SCALE_FACTOR_OF_AXON_LENGTH)*posy+SCALE_FACTOR_OF_AXON_LENGTH*y2sorted[i+1]-yimageshift);
+    cell.bezierVertex(posx-ximageshift, posy-yimageshift, posx-ximageshift, posy-yimageshift, (1-SCALE_FACTOR_OF_AXON_LENGTH)*posx+SCALE_FACTOR_OF_AXON_LENGTH*x2sorted[0]-ximageshift, (1-SCALE_FACTOR_OF_AXON_LENGTH)*posy+SCALE_FACTOR_OF_AXON_LENGTH*y2sorted[0]-yimageshift);
     
     // cell.filter(BLUR,6);
 
@@ -193,7 +193,7 @@ class Neuron
     // noise_image.noSmooth();
     // for (int i=0; i<=xdim; i++)
     //   for (int j=0; j<=xdim; j++) {
-    //       noise_image.set(i,j,color(neuron_color,int(random(255.0 * (float)(Math.exp(-Math.pow( Math.sqrt(Math.pow(i-xdim/2,2)+Math.pow(j-ydim/2,2))/(xdim/6),2 )))))));
+    //       noise_image.set(i,j,color(NEURON_COLOR,int(random(255.0 * (float)(Math.exp(-Math.pow( Math.sqrt(Math.pow(i-xdim/2,2)+Math.pow(j-ydim/2,2))/(xdim/6),2 )))))));
     //   }
     // noise_image.endDraw();
     
@@ -230,7 +230,7 @@ void better_blenddown()
   ellipseMode(CENTER);
   for (i=0; i<20; i++)
   {
-    fill(background_color, 5);
+    fill(BACKGROUND_COLOR, 5);
     ellipse(int(random(width)), int(random(height)), int(random(nradius*50)), int(random(nradius*50)));
   }
 
