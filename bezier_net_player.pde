@@ -27,17 +27,14 @@ int newcurve = 5000;
 int sound;
 long frame_counter = 0;
 int frames_per_second = 15;
-// float ms_per_frame = 4.0;
-float ms_per_frame = 1000./float(frames_per_second); // display in real time;
+float ms_per_frame = 10.0;
+// float ms_per_frame = 1000./float(frames_per_second); // display in real time;
 float actual_time = 0.0;
-float last_spike_time;
 
-String spike_index_filename = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_index_net1_cc0_p0_w0.dat";
-String spike_times_filename = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_times_net1_cc0_p0_w0.dat";
-BufferedReader fileReaderSpikeIndex;
-BufferedReader fileReaderSpikeTimes;
-String lineIndex = "1";
-String lineTime = "0.0";
+String SPIKE_INDEX_FILENAME = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_index_net1_cc0_p0_w0.dat";
+String SPIKE_TIMES_FILENAME = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_times_net1_cc0_p0_w0.dat";
+SpikeInput reader;
+int current_spike_index;
 
 boolean displayactivitycurve = true;
 boolean act_as_drum_machine = false;
@@ -52,9 +49,6 @@ Neuron n1, n2;
 Neuron[] net = new Neuron[nnumber];
 int[] cfrom = new int[cnumber];
 int[] cto = new int[cnumber];
-// float[] transfer = new float[nnumber];
-// float[] constIext = new float[nnumber];
-// float[] transmitter = new float[cnumber];
 boolean[] has_fired_in_this_frame = new boolean[nnumber];
 // PGraphics noise_image;
 
@@ -66,7 +60,7 @@ void setup()
   textFont(createFont("LucidaGrande", 26));
   textAlign(CENTER, CENTER);
   // size(screen.width, screen.height, OPENGL);
-  size(1200, 600, OPENGL);
+  size(1280, 720, OPENGL);
   nradius = width/150.0;
   nblurradius = width/250.0;
   smooth();
@@ -82,6 +76,8 @@ void setup()
   // click[2] = minim.loadSample("../drums/Human Clap 001.wav");
   // click[3] = minim.loadSample("../drums/Gabba Kick 001.wav");
   click[1] = minim.loadSample("../drums/Metalic Kick 001.wav");
+  
+  reader = new SpikeInput(SPIKE_INDEX_FILENAME, SPIKE_TIMES_FILENAME);
   
   // load positions
   // String path = selectFolder("Please choose path to network parameters");
@@ -127,13 +123,6 @@ void setup()
   // println("creating noise pattern ...");
   // noise_image = create_noise_shape(width/10,height/10);
   
-  println("opening spike data files and reading first spike...");
-  fileReaderSpikeIndex = createReader(spike_index_filename);    
-  fileReaderSpikeTimes = createReader(spike_times_filename);    
-  // lineIndex = fileReaderSpikeIndex.readLine();
-  // lineTime = fileReaderSpikeTimes.readLine();
-  // last_spike_time = float(lineTime);
-  
   println("go!");
 }
 
@@ -156,13 +145,12 @@ void draw()
     has_fired_in_this_frame[i] = false;
   }
   
-  // evaluate spikes (loaded from buffer)
-  while(last_spike_time < actual_time) {
+  // see if one or more neurons have spiked and if so, let them blink
+  while( (current_spike_index = reader.get_next_spike_index(actual_time)) != -1 ) {
     // neuron fires now!
-    j = int(lineIndex);
-    if(!has_fired_in_this_frame[j]) {
-      net[j].blink();
-      has_fired_in_this_frame[j] = true;
+    if(!has_fired_in_this_frame[current_spike_index]) {
+      net[current_spike_index].blink();
+      has_fired_in_this_frame[current_spike_index] = true;
       fired++;
     }
     // play drum machine!
@@ -172,18 +160,6 @@ void draw()
       // if (fired>6) sound = 2;
       // if (fired>10) sound = 3;
       click[sound].trigger();
-    }
-
-    // then, load next spike
-    try {
-      lineIndex = fileReaderSpikeIndex.readLine();
-      lineTime = fileReaderSpikeTimes.readLine();
-      last_spike_time = float(lineTime);
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-      // Stop because of an error or file is empty
-      noLoop();
     }
   }
   
@@ -264,19 +240,6 @@ void simple_blenddown(int alpha)
   smooth();
 }
 
-// determine the angle of outgoing connections
-float out_angle(int x1, int y1, int x2, int y2)
-{
-  // remove offset
-  return out_angle(x2-x1, y2-y1);
-}
-float out_angle(int x2, int y2)
-{
-  // the reversal of the parameters here is correct!
-  float result = atan2(y2,x2);
-  if (result<0) result += TWO_PI;
-  return result;
-}
 
 void stop()
 {

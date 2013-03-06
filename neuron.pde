@@ -1,4 +1,4 @@
-// --------------------------- definition on Neuron class ----------------------
+// --------------------------- definition of Neuron class ----------------------
 class Neuron
 {
   int posx, posy;
@@ -235,4 +235,18 @@ void better_blenddown()
   }
 
   smooth();
+}
+
+// determine the angle of outgoing connections
+float out_angle(int x1, int y1, int x2, int y2)
+{
+  // remove offset
+  return out_angle(x2-x1, y2-y1);
+}
+float out_angle(int x2, int y2)
+{
+  // the reversal of the parameters here is correct!
+  float result = atan2(y2,x2);
+  if (result<0) result += TWO_PI;
+  return result;
 }
