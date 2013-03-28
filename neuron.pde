@@ -3,24 +3,23 @@ class Neuron
 {
   int posx, posy;
   PGraphics cell, noise_image;
-  int[] out_connections;
   // offset for displaying sprite
   int x_offset, y_offset;
   int x_sprite_dim, y_sprite_dim;
   float noise_scaling_factor = 2.0;
+  boolean has_fired_in_this_frame;
   
-  Neuron(int posxtemp, int posytemp)
+  Neuron()
   {
-    posx = posxtemp;
-    posy = posytemp;
+    posx = posy = 0;
     cell = null;
     noise_image = null;
-    out_connections = null;
     x_offset = y_offset = 0;
     x_sprite_dim = y_sprite_dim = 0;
+    has_fired_in_this_frame = false;
   }
   
-  void setPos(int posxtemp, int posytemp)
+  void set_2D_position(int posxtemp, int posytemp)
   {
     posx = posxtemp;
     posy = posytemp;
@@ -31,12 +30,6 @@ class Neuron
   
   int getPosY()
   { return posy; }
-
-  void setConnections(int[] cons)
-  { out_connections = cons; }
-
-  int[] getConnections()
-  { return out_connections; }
 
   void blink()
   {

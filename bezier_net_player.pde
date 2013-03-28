@@ -19,6 +19,8 @@ float nblurradius;
 int blinkpixels = 20;
 int border = 10;
 
+String PATH_TO_NETWORK_INFO = "./";
+
 int rolling = 0;
 int oldcurve = 5000;
 int newcurve = 5000;
@@ -43,12 +45,13 @@ float FRACTION_OF_CONNECTIONS_SHOWN = 0.66;
 float SCALE_FACTOR_OF_AXON_LENGTH = 0.33;
 
 int i, j, k;
-Neuron n1, n2;
-Neuron[] net = new Neuron[NUMBER_OF_NEURONS];
-int[] cfrom = new int[NUMBER_OF_CONNECTIONS];
-int[] cto = new int[NUMBER_OF_CONNECTIONS];
-boolean[] has_fired_in_this_frame = new boolean[NUMBER_OF_NEURONS];
+// Neuron n1, n2;
+// Neuron[] net = new Neuron[NUMBER_OF_NEURONS];
+// int[] cfrom = new int[NUMBER_OF_CONNECTIONS];
+// int[] cto = new int[NUMBER_OF_CONNECTIONS];
+// boolean[] has_fired_in_this_frame = new boolean[NUMBER_OF_NEURONS];
 // PGraphics noise_image;
+Network net;
 
 void setup()
 {
@@ -77,50 +80,22 @@ void setup()
   
   reader = new SpikeInput(SPIKE_INDEX_FILENAME, SPIKE_TIMES_FILENAME);
   
-  // load positions
-  // String path = selectFolder("Please choose path to network parameters");
-  String path = "./";
-  println("loading "+path+"pos_processing.txt ...");
-  String[] input=loadStrings(path+"pos_processing.txt");
+  net = new Network(NUMBER_OF_NEURONS);
+  net.reset_all_firing_flags_at_beginning_of_frame();
   
-  for (i=0; i<NUMBER_OF_NEURONS; i++)
-    net[i] = new Neuron(round(float(input[2*i])*(width-2*border))+border,
-      round(float(input[2*i+1])*(height-2*border)+border));
+  // load positions
+  println("loading "+PATH_TO_NETWORK_INFO+"pos_processing.txt ...");
+  net.load_cell_positions_from_file(PATH_TO_NETWORK_INFO+"pos_processing.txt");
 
   // load connections
-  println("loading "+path+"cons_processing.txt ...");
-  String[] cinput=loadStrings(path+"cons_processing.txt");
-  if (cinput==null) exit();
-  
-  for (i=0; i<NUMBER_OF_CONNECTIONS; i++) {
-    cfrom[i] = int(cinput[3*i])-1;
-    cto[i] = int(cinput[3*i+1])-1;
-  }
+  println("loading "+PATH_TO_NETWORK_INFO+"cons_processing.txt ...");
+  net.load_connections_from_file(PATH_TO_NETWORK_INFO+"cons_processing.txt");
 
   // set internal connection arrays and create PGraphics shapes
   println("creating cell sprites ...");
-  for (i=0; i<NUMBER_OF_NEURONS; i++) {
-    int[] x2s = new int[0];
-    int[] y2s = new int[0];
-    for (j=0; j<NUMBER_OF_CONNECTIONS; j++) {
-      if ((cfrom[j]==i)&&(random(1.0)<FRACTION_OF_CONNECTIONS_SHOWN)) {
-        x2s = append(x2s, net[cto[j]].getPosX());
-        y2s = append(y2s, net[cto[j]].getPosY());
-      }
-    }
-    net[i].create_cell_shape(x2s, y2s, NEURON_COLOR);
-  }
-  println("creating noise sprites ...");
-  for (i=0; i<NUMBER_OF_NEURONS; i++) {
-    net[i].create_noise_shape(width/5,height/5); //(400,400);
-  }
-  for (i=0; i<NUMBER_OF_NEURONS; i++) {
-    net[i].blink();
-  }
+  net.assemble_cell_sprites();
+  net.give_me_a_ping_vasily();
 
-  // println("creating noise pattern ...");
-  // noise_image = create_noise_shape(width/10,height/10);
-  
   println("go!");
 }
 
@@ -139,16 +114,14 @@ void draw()
 
   // clear firing history of this frame
   fired = 0;
-  for (i=0; i<NUMBER_OF_NEURONS; i++) {
-    has_fired_in_this_frame[i] = false;
-  }
+  net.reset_all_firing_flags_at_beginning_of_frame();
   
   // see if one or more neurons have spiked and if so, let them blink
   while( (current_spike_index = reader.get_next_spike_index(actual_time)) != -1 ) {
     // neuron fires now!
-    if(!has_fired_in_this_frame[current_spike_index]) {
-      net[current_spike_index].blink();
-      has_fired_in_this_frame[current_spike_index] = true;
+    if(net.node(current_spike_index).has_fired_in_this_frame == false) {
+      net.node(current_spike_index).blink();
+      net.node(current_spike_index).has_fired_in_this_frame = true;
       fired++;
     }
     // play drum machine!
