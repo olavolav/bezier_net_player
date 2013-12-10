@@ -1,3 +1,6 @@
+// command to run:
+// $ processing-java --run --force --sketch=/Users/olav/Documents/Processing/bezier_net_player/ --output=/tmp/processing/
+
 import processing.opengl.*;
 
 /* import processing.video.*;
@@ -58,7 +61,7 @@ void setup()
   size(800, 600, OPENGL);
   nradius = width/150.0;
   nblurradius = width/250.0;
-  smooth();
+  noSmooth();
   background(BACKGROUND_COLOR);
 
   /* println("initializing movie for export ...");
@@ -194,7 +197,6 @@ void keyPressed()
 
 void simple_blenddown(int alpha)
 {
-  noSmooth();
   noStroke();
   if(!randomize_colors) {
     fill(BACKGROUND_COLOR, alpha);
@@ -202,7 +204,6 @@ void simple_blenddown(int alpha)
     fill(color(#000000), alpha);
   }
   rect(0, 0, width, height);
-  smooth();
 }
 
 

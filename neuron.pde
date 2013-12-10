@@ -39,16 +39,14 @@ class Neuron
     } else {
       colorMode(HSB, 100);
       // tint(round(random(100)),100,100);
-      tint(int(100.*float(posx)/screen.width),50,100,100);
-      fill(int(100.*float(posx)/screen.width),100,100,10);
+      tint(int(100.*float(posx)/width),50,100,100);
+      fill(int(100.*float(posx)/width),100,100,10);
       colorMode(RGB, 255);
     }
-    smooth();
     image(cell,posx+x_offset,posy+y_offset);
 
     // if(randomize_colors) {
       ellipseMode(CENTER);
-      noSmooth();
       // fill(NEURON_COLOR,10);
       noStroke();
       ellipse(posx, posy, 5*nradius*(random(1.0)+0.5), 5*nradius*(random(1.0)+0.5));
@@ -59,14 +57,12 @@ class Neuron
     // }
     
     // imageMode(CENTER);
-    noSmooth();
     // 1. outer copy
     image(noise_image, posx+noise_scaling_factor*x_offset, posy+noise_scaling_factor*y_offset, noise_scaling_factor*noise_image.width, noise_scaling_factor*noise_image.height);
     // 2. inner copy
     // tint(color(#ffffff),100);
     // image(noise_image,posx+x_offset,posy+y_offset);
 
-    smooth();
     noTint();
   }
 
@@ -175,8 +171,6 @@ class Neuron
     cell.endShape(CLOSE);
 
     cell.endDraw();
-
-    // return cell;
   }
   
   void create_noise_shape(int xdim, int ydim)
@@ -209,7 +203,6 @@ class Neuron
       noise_image.pixels[i] = color(#FFFFFF,int(brightness(noise_image.pixels[i])));
     }
     noise_image.updatePixels();
-    noise_image.endDraw();
   }
   
 }
@@ -219,16 +212,12 @@ void better_blenddown()
   simple_blenddown(10);
 
   noStroke();
-  noSmooth();
-
   ellipseMode(CENTER);
   for (i=0; i<20; i++)
   {
     fill(BACKGROUND_COLOR, 5);
     ellipse(int(random(width)), int(random(height)), int(random(nradius*50)), int(random(nradius*50)));
   }
-
-  smooth();
 }
 
 // determine the angle of outgoing connections
@@ -237,6 +226,7 @@ float out_angle(int x1, int y1, int x2, int y2)
   // remove offset
   return out_angle(x2-x1, y2-y1);
 }
+
 float out_angle(int x2, int y2)
 {
   // the reversal of the parameters here is correct!
