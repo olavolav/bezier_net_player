@@ -78,7 +78,6 @@ void setup()
   reader = new SpikeInput(SPIKE_INDEX_FILENAME, SPIKE_TIMES_FILENAME);
   
   net = new Network(NUMBER_OF_NEURONS);
-  net.reset_all_firing_flags_at_beginning_of_frame();
   
   // load positions
   println("loading "+PATH_TO_NETWORK_INFO+"pos_processing.txt ...");
@@ -91,7 +90,7 @@ void setup()
   // set internal connection arrays and create PGraphics shapes
   println("creating cell sprites ...");
   net.assemble_cell_sprites();
-  // net.give_me_a_ping_vasily();
+  net.give_me_a_ping_vasily();
 
   println("go!");
 }
@@ -111,16 +110,12 @@ void draw()
 
   // clear firing history of this frame
   fired = 0;
-  net.reset_all_firing_flags_at_beginning_of_frame();
   
   // see if one or more neurons have spiked and if so, let them blink
   while( (current_spike_index = reader.get_next_spike_index(actual_time)) != -1 ) {
     // neuron fires now!
-    if(net.node(current_spike_index).has_fired_in_this_frame == false) {
-      net.node(current_spike_index).blink();
-      net.node(current_spike_index).has_fired_in_this_frame = true;
-      fired++;
-    }
+    net.node(current_spike_index).blink();
+    fired++;
     // play drum machine!
     if ((fired>0) && act_as_drum_machine) {
       sound = 0;

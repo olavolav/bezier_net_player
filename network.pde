@@ -19,13 +19,6 @@ class Network
     cto = new int[size];
   }
   
-  void reset_all_firing_flags_at_beginning_of_frame()
-  {
-    for (i=0; i<this.size; i++) {
-      neurons[i].has_fired_in_this_frame = false;
-    }
-  }
-  
   Neuron node(int index)
   {
     return neurons[index];

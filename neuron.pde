@@ -7,7 +7,7 @@ class Neuron
   int x_offset, y_offset;
   int x_sprite_dim, y_sprite_dim;
   float noise_scaling_factor = 2.0;
-  boolean has_fired_in_this_frame;
+  int frame_count_at_last_blinking = -1;
   
   Neuron()
   {
@@ -16,7 +16,6 @@ class Neuron
     noise_image = null;
     x_offset = y_offset = 0;
     x_sprite_dim = y_sprite_dim = 0;
-    has_fired_in_this_frame = false;
   }
   
   void set_2D_position(int posxtemp, int posytemp)
@@ -31,8 +30,10 @@ class Neuron
   int getPosY()
   { return posy; }
 
-  void blink()
-  {
+  void blink() {
+    if(frame_count_at_last_blinking == frameCount) return;
+    frame_count_at_last_blinking = frameCount;
+    
     imageMode(CORNER);
     if(!randomize_colors) {
       tint(NEURON_COLOR,100+150);
