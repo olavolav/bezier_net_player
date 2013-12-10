@@ -71,9 +71,6 @@ class Network
     for (i=0; i<size; i++) {
       neurons[i].create_noise_shape(width/5,height/5); //(400,400);
     }
-    for (i=0; i<size; i++) {
-      neurons[i].blink();
-    }
   }
   
   void give_me_a_ping_vasily()

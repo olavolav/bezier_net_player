@@ -35,7 +35,7 @@ class Neuron
   {
     imageMode(CORNER);
     if(!randomize_colors) {
-      tint(NEURON_COLOR,100);
+      tint(NEURON_COLOR,100+150);
     } else {
       colorMode(HSB, 100);
       // tint(round(random(100)),100,100);
@@ -46,7 +46,7 @@ class Neuron
     smooth();
     image(cell,posx+x_offset,posy+y_offset);
 
-    if(randomize_colors) {
+    // if(randomize_colors) {
       ellipseMode(CENTER);
       noSmooth();
       // fill(NEURON_COLOR,10);
@@ -55,7 +55,8 @@ class Neuron
       ellipse(posx, posy, 10*nradius*(random(1.0)+0.5), 10*nradius*(random(1.0)+0.5));
       ellipse(posx, posy, 20*nradius*(random(1.0)+0.5), 20*nradius*(random(1.0)+0.5)); 
       // ellipse(posx, posy, 7, 7); // middle of neuron
-    }
+      // ellipse(posx, posy, 70, 70); // middle of neuron
+    // }
     
     // imageMode(CENTER);
     noSmooth();
@@ -76,16 +77,16 @@ class Neuron
 
     // first, add missing random connections if there are less than 3 present
     int sign;
-    while(nr_connections < 2) {
+    while(nr_connections < 5) {
       // println ("adding a connection.");
       if (random(1.0)>0.5) sign = -1;
       else sign = 1;
       // the following works because Java is call-by-value
-      x2s = append(x2s, posx+sign*int(random(25,50)));
+      x2s = append(x2s, posx+sign*int(random(2*25,2*50)));
 
       if (random(1.0)>0.5) sign = -1;
       else sign = 1;
-      y2s = append(y2s, posy+sign*int(random(25,50)));
+      y2s = append(y2s, posy+sign*int(random(2*25,2*50)));
 
       nr_connections++;
     }

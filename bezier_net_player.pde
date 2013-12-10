@@ -28,7 +28,7 @@ int newcurve = 5000;
 int sound;
 long frame_counter = 0;
 int FRAMES_PER_SECOND = 15;
-float MS_PER_FRAME = 10.0;
+float MS_PER_FRAME = 5*10.0;
 // float MS_PER_FRAME = 1000./float(FRAMES_PER_SECOND); // display in real time;
 float actual_time = 0.0;
 
@@ -41,16 +41,10 @@ boolean displayactivitycurve = true;
 boolean act_as_drum_machine = false;
 boolean randomize_colors = false;
 
-float FRACTION_OF_CONNECTIONS_SHOWN = 0.66;
-float SCALE_FACTOR_OF_AXON_LENGTH = 0.33;
+float FRACTION_OF_CONNECTIONS_SHOWN = 1.0;
+float SCALE_FACTOR_OF_AXON_LENGTH = 0.5;
 
 int i, j, k;
-// Neuron n1, n2;
-// Neuron[] net = new Neuron[NUMBER_OF_NEURONS];
-// int[] cfrom = new int[NUMBER_OF_CONNECTIONS];
-// int[] cto = new int[NUMBER_OF_CONNECTIONS];
-// boolean[] has_fired_in_this_frame = new boolean[NUMBER_OF_NEURONS];
-// PGraphics noise_image;
 Network net;
 
 void setup()
@@ -61,7 +55,7 @@ void setup()
   textFont(createFont("LucidaGrande", 26));
   textAlign(CENTER, CENTER);
   // size(screen.width, screen.height, OPENGL);
-  size(1280, 720, OPENGL);
+  size(800, 600, OPENGL);
   nradius = width/150.0;
   nblurradius = width/250.0;
   smooth();
@@ -94,7 +88,7 @@ void setup()
   // set internal connection arrays and create PGraphics shapes
   println("creating cell sprites ...");
   net.assemble_cell_sprites();
-  net.give_me_a_ping_vasily();
+  // net.give_me_a_ping_vasily();
 
   println("go!");
 }
