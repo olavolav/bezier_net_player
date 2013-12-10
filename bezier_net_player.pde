@@ -12,8 +12,8 @@ Minim minim;
 AudioSample[] click = new AudioSample[2];
 
 color NEURON_COLOR = #EFF7CF;
-color BACKGROUND_COLOR = #044304;
-// color BACKGROUND_COLOR = #000000;
+// color BACKGROUND_COLOR = #044304;
+color BACKGROUND_COLOR = #000000;
 int NUMBER_OF_NEURONS = 100;
 int NUMBER_OF_CONNECTIONS = 1209;
 int fired = 0;
@@ -24,16 +24,14 @@ int border = 10;
 
 String PATH_TO_NETWORK_INFO = "./";
 
-int rolling = 0;
-int oldcurve = 5000;
-int newcurve = 5000;
-
 int sound;
 long frame_counter = 0;
 int FRAMES_PER_SECOND = 15;
 float MS_PER_FRAME = 5*10.0;
 // float MS_PER_FRAME = 1000./float(FRAMES_PER_SECOND); // display in real time;
 float actual_time = 0.0;
+
+Screen display;
 
 String SPIKE_INDEX_FILENAME = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_index_net1_cc0_p0_w0.dat";
 String SPIKE_TIMES_FILENAME = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_times_net1_cc0_p0_w0.dat";
@@ -52,13 +50,13 @@ Network net;
 
 void setup()
 {
+  display = new Screen(800, 600);
   frameRate(FRAMES_PER_SECOND);
   strokeWeight(8);
   
   textFont(createFont("LucidaGrande", 26));
   textAlign(CENTER, CENTER);
-  // size(screen.width, screen.height, OPENGL);
-  size(800, 600, OPENGL);
+
   nradius = width/150.0;
   nblurradius = width/250.0;
   noSmooth();
@@ -100,8 +98,8 @@ void setup()
 
 void draw()
 {
-  // better_blenddown();
-  simple_blenddown(3+3);
+  // display.better_blenddown();
+  display.simple_blenddown(3+3);
 
   frame_counter += 1;
   actual_time = frame_counter*MS_PER_FRAME;
@@ -125,30 +123,11 @@ void draw()
       click[sound].trigger();
     }
   }
-  
-  // display activity
-  if(displayactivitycurve)
-  {
-    stroke(NEURON_COLOR, 200);
-    strokeWeight(3);
-    newcurve = int(height*0.9-3*fired+0*(random(5)-3));
-    line(rolling, oldcurve, rolling+3, newcurve);
-    oldcurve = newcurve;
 
-    fill(#FFFFFF,50);
-    noStroke();
-    ellipseMode(CENTER);
-    ellipse(rolling+3, newcurve, 10, 10);
-
-  }
-  rolling = (rolling+3)%width;
+  display.display_activity_curve();
+  display.display_current_time();
 
   // if (record_movie) mm.addFrame();  // Add window's pixels to movie
-  
-  // display current time
-  fill(#FFFFFF,100);
-  textAlign(LEFT, CENTER);
-  text(str(int(actual_time))+" ms", 30, height/2);
 }
 
 // -------------------------------------------------- main loop: end --------------------------------------------------
@@ -161,11 +140,10 @@ void keyPressed()
   switch(key)
   {
     case ' ':
-      if (displayactivitycurve)
-        text("display activity curve: off", width/2, height/2);
-      else text("display activity curve: on", width/2, height/2);
-      displayactivitycurve = !displayactivitycurve;
-      rolling = 0;
+      boolean new_state = display.toogle_activity_curve();
+      if(new_state)
+        text("display activity curve: on", width/2, height/2);
+      else text("display activity curve: off", width/2, height/2);
       break;
     /* case 's':
       if (record_movie) {
@@ -187,18 +165,6 @@ void keyPressed()
     default:
       text("non-functional key pressed", width/2, height/2);
   }
-}
-
-
-void simple_blenddown(int alpha)
-{
-  noStroke();
-  if(!randomize_colors) {
-    fill(BACKGROUND_COLOR, alpha);
-  } else {
-    fill(color(#000000), alpha);
-  }
-  rect(0, 0, width, height);
 }
 
 

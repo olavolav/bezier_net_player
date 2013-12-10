@@ -197,7 +197,7 @@ class Neuron
     noise_image.loadPixels();
     arrayCopy(cell.pixels, noise_image.pixels);
     noise_image.updatePixels();
-    noise_image.filter(BLUR,4);
+    noise_image.filter(BLUR, 4);
     // since the blur filter is buggy (transparent->black), reset alpha values
     noise_image.loadPixels();
     for(int i=0; i<noise_image.width*noise_image.height; i++) {
@@ -206,19 +206,6 @@ class Neuron
     noise_image.updatePixels();
   }
   
-}
-
-void better_blenddown()
-{
-  simple_blenddown(10);
-
-  noStroke();
-  ellipseMode(CENTER);
-  for (i=0; i<20; i++)
-  {
-    fill(BACKGROUND_COLOR, 5);
-    ellipse(int(random(width)), int(random(height)), int(random(nradius*50)), int(random(nradius*50)));
-  }
 }
 
 // determine the angle of outgoing connections
