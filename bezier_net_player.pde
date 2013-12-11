@@ -21,6 +21,7 @@ float nradius;
 float nblurradius;
 int blinkpixels = 20;
 int border = 10;
+int FONT_SIZE = 26;
 
 String PATH_TO_NETWORK_INFO = "./";
 
@@ -53,7 +54,7 @@ void setup() {
   frameRate(FRAMES_PER_SECOND);
   strokeWeight(8);
   
-  textFont(createFont("LucidaGrande", 26));
+  textFont(createFont("LucidaGrande", FONT_SIZE));
   textAlign(CENTER, CENTER);
 
   nradius = width/sqrt(float(NUMBER_OF_NEURONS));
@@ -120,6 +121,7 @@ void draw() {
 
   display.display_activity_curve();
   display.display_current_time();
+  display.display_frame_rate();
 
   // if (record_movie) mm.addFrame();  // Add window's pixels to movie
 }
