@@ -85,7 +85,6 @@ void setup() {
   net.load_connections_from_file(PATH_TO_NETWORK_INFO+"cons_processing.txt");
 
   // net.give_me_a_ping_vasily();
-
   println("go!");
 }
 

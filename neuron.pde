@@ -22,10 +22,6 @@ class Neuron
     posy = posytemp;
   }
   
-  int getPosX() { return posx; }
-  
-  int getPosY() { return posy; }
-
   void blink() {
     if(frame_count_at_last_blinking == frameCount) return;
     frame_count_at_last_blinking = frameCount;
@@ -40,9 +36,7 @@ class Neuron
       colorMode(RGB, 255);
     }
     // ellipse(posx, posy, 2*nradius, 2*nradius);
-    ellipse(posx+10*cos(frameCount*0.01), posy, 1*nradius, 1*nradius);
-    ellipse(posx+10*cos(frameCount*0.01), posy, 0.5*nradius, 0.5*nradius);
-
-    noTint();
+    ellipse(posx, posy, 1*nradius, 1*nradius);
+    ellipse(posx, posy, 0.5*nradius, 0.5*nradius);
   }
 }
