@@ -30,6 +30,10 @@ int FRAMES_PER_SECOND = 15;
 float MS_PER_FRAME = 2*10.0;
 // float MS_PER_FRAME = 1000./float(FRAMES_PER_SECOND); // display in real time;
 
+float CALCIUM_AT_DYE_CHANGE_ON_ACTION_POTENTIAL = 50.0;
+float SATURATING_CALCIUM_AT_DYE_CONCENTRATION = 300.0;
+float CALCIUM_UNBINDING_TIME_SCALE = 1000.0; // in [ms]
+
 Screen display;
 Controller control;
 
@@ -94,9 +98,8 @@ void setup() {
 
 void draw() {
   // display.better_blenddown();
-  display.simple_blenddown(3);
-  
-  // net.node(int(frame_counter % NUMBER_OF_NEURONS)).blink(1);
+  display.simple_blenddown(3*20);
+  // display.clear();
   
   // clear firing history of this frame
   fired = 0;
@@ -116,6 +119,7 @@ void draw() {
     }
   }
 
+  display.show_neurons();
   display.display_activity_curve();
   display.display_current_time();
   display.display_frame_rate();

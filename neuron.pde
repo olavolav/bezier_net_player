@@ -8,6 +8,7 @@ class Neuron
   int x_sprite_dim, y_sprite_dim;
   float noise_scaling_factor = 2.0;
   int frame_count_at_last_blinking = -1;
+  float calcium_concentration_at_dye = 0.0;
   
   Neuron() {
     posx = posy = 0;
@@ -23,9 +24,16 @@ class Neuron
   }
   
   void recieves_a_spike() {
-    if(frame_count_at_last_blinking == frameCount) return;
-    frame_count_at_last_blinking = frameCount;
-    display.let_neuron_blink(this);
+    calcium_concentration_at_dye += CALCIUM_AT_DYE_CHANGE_ON_ACTION_POTENTIAL;
+  }
+  
+  float calcium_fluorescence() { // unit-less
+    // saturating Hill function
+    return calcium_concentration_at_dye/(calcium_concentration_at_dye + SATURATING_CALCIUM_AT_DYE_CONCENTRATION);
+  }
+  
+  void update() {
+    calcium_concentration_at_dye *= MS_PER_FRAME/CALCIUM_UNBINDING_TIME_SCALE;
   }
   
 }

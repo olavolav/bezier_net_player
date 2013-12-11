@@ -70,6 +70,11 @@ class Screen
     }
   }
   
+  void clear() {
+    fill(BACKGROUND_COLOR);
+    rect(0, 0, width, height);
+  }
+  
   void let_neuron_blink(Neuron node) {
     noStroke();
     imageMode(CORNER);
@@ -85,5 +90,28 @@ class Screen
     ellipse(node.posx, node.posy, 0.5*nradius, 0.5*nradius);
   }
   
+  void show_neuron(Neuron node) {
+    int alpha_v = int(255*(node.calcium_fluorescence()));
+    if(alpha_v > 3) {
+      noStroke();
+      imageMode(CORNER);
+      if(!randomize_colors) {
+        fill(NEURON_COLOR, alpha_v);
+      } else {
+        colorMode(HSB, 100);
+        fill(int(100.*float(node.posx)/width), 100, 100, alpha_v);
+        colorMode(RGB, 255);
+      }
+      ellipse(node.posx, node.posy, 2*nradius, 2*nradius);
+      ellipse(node.posx, node.posy, 1*nradius, 1*nradius);
+      ellipse(node.posx, node.posy, 0.5*nradius, 0.5*nradius);
+    }
+  }
+  
+  void show_neurons() {
+    for (i=0; i<NUMBER_OF_NEURONS; i++) {
+      show_neuron(net.node(i));
+    }
+  }
   
 }

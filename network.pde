@@ -40,20 +40,6 @@ class Network
     }
   }
   
-  // void assemble_cell_sprites() {
-  //   // set internal connection arrays and create PGraphics shapes
-  //   for (i=0; i<size; i++) {
-  //     int[] x2s = new int[0];
-  //     int[] y2s = new int[0];
-  //     for (j=0; j<size; j++) {
-  //       if ((cfrom[j]==i)&&(random(1.0)<FRACTION_OF_CONNECTIONS_SHOWN)) {
-  //         x2s = append(x2s, neurons[cto[j]].getPosX());
-  //         y2s = append(y2s, neurons[cto[j]].getPosY());
-  //       }
-  //     }
-  //   }
-  // }
-  
   void give_me_a_ping_vasily() {
     for (i=0; i<size; i++) {
       display.let_neuron_blink(neurons[i]);
