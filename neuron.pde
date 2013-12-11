@@ -22,21 +22,10 @@ class Neuron
     posy = posytemp;
   }
   
-  void blink() {
+  void recieves_a_spike() {
     if(frame_count_at_last_blinking == frameCount) return;
     frame_count_at_last_blinking = frameCount;
-    noStroke();
-
-    imageMode(CORNER);
-    if(!randomize_colors) {
-      fill(NEURON_COLOR, 30);
-    } else {
-      colorMode(HSB, 100);
-      fill(int(100.*float(posx)/width), 100, 100, 30);
-      colorMode(RGB, 255);
-    }
-    // ellipse(posx, posy, 2*nradius, 2*nradius);
-    ellipse(posx, posy, 1*nradius, 1*nradius);
-    ellipse(posx, posy, 0.5*nradius, 0.5*nradius);
+    display.let_neuron_blink(this);
   }
+  
 }

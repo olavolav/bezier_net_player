@@ -56,7 +56,7 @@ class Network
   
   void give_me_a_ping_vasily() {
     for (i=0; i<size; i++) {
-      neurons[i].blink();
+      display.let_neuron_blink(neurons[i]);
     }
   }
   

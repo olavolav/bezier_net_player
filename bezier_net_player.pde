@@ -104,7 +104,7 @@ void draw() {
   // see if one or more neurons have spiked and if so, let them blink
   while( (current_spike_index = reader.get_next_spike_index(control.real_time_in_MS)) != -1 ) {
     // neuron fires now!
-    net.node(current_spike_index).blink();
+    net.node(current_spike_index).recieves_a_spike();
     fired++;
     // play drum machine!
     if ((fired>0) && act_as_drum_machine) {

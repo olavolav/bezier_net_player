@@ -70,4 +70,20 @@ class Screen
     }
   }
   
+  void let_neuron_blink(Neuron node) {
+    noStroke();
+    imageMode(CORNER);
+    if(!randomize_colors) {
+      fill(NEURON_COLOR, 30);
+    } else {
+      colorMode(HSB, 100);
+      fill(int(100.*float(node.posx)/width), 100, 100, 30);
+      colorMode(RGB, 255);
+    }
+    // ellipse(posx, posy, 2*nradius, 2*nradius);
+    ellipse(node.posx, node.posy, 1*nradius, 1*nradius);
+    ellipse(node.posx, node.posy, 0.5*nradius, 0.5*nradius);
+  }
+  
+  
 }
