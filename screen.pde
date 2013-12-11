@@ -75,42 +75,27 @@ class Screen
     rect(0, 0, width, height);
   }
   
-  void let_neuron_blink(Neuron node) {
+  void draw_neuron(Neuron node) {
+    int alpha_v = int(255*(node.calcium_fluorescence() + random(0.01)));
+    float x_offset = width/20.0 * cos(frameCount/180.0);
+    float y_offset = height/20.0 * sin(frameCount/180.0);
     noStroke();
     imageMode(CORNER);
     if(!randomize_colors) {
-      fill(NEURON_COLOR, 30);
+      fill(NEURON_COLOR, alpha_v);
     } else {
       colorMode(HSB, 100);
-      fill(int(100.*float(node.posx)/width), 100, 100, 30);
+      fill(int(100.*float(node.posx)/width), 100, 100, alpha_v);
       colorMode(RGB, 255);
     }
-    // ellipse(posx, posy, 2*nradius, 2*nradius);
-    ellipse(node.posx, node.posy, 1*nradius, 1*nradius);
-    ellipse(node.posx, node.posy, 0.5*nradius, 0.5*nradius);
+    ellipse(node.posx + x_offset, node.posy + y_offset, 2*nradius, 2*nradius);
+    ellipse(node.posx + x_offset, node.posy + y_offset, 1*nradius, 1*nradius);
+    ellipse(node.posx + x_offset, node.posy + y_offset, 0.5*nradius, 0.5*nradius);
   }
   
-  void show_neuron(Neuron node) {
-    int alpha_v = int(255*(node.calcium_fluorescence()));
-    if(alpha_v > 3) {
-      noStroke();
-      imageMode(CORNER);
-      if(!randomize_colors) {
-        fill(NEURON_COLOR, alpha_v);
-      } else {
-        colorMode(HSB, 100);
-        fill(int(100.*float(node.posx)/width), 100, 100, alpha_v);
-        colorMode(RGB, 255);
-      }
-      ellipse(node.posx, node.posy, 2*nradius, 2*nradius);
-      ellipse(node.posx, node.posy, 1*nradius, 1*nradius);
-      ellipse(node.posx, node.posy, 0.5*nradius, 0.5*nradius);
-    }
-  }
-  
-  void show_neurons() {
+  void draw_neurons() {
     for (i=0; i<NUMBER_OF_NEURONS; i++) {
-      show_neuron(net.node(i));
+      draw_neuron(net.node(i));
     }
   }
   

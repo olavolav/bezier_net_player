@@ -33,7 +33,7 @@ class Neuron
   }
   
   void update() {
-    calcium_concentration_at_dye *= MS_PER_FRAME/CALCIUM_UNBINDING_TIME_SCALE;
+    calcium_concentration_at_dye *= (1.0 - MS_PER_FRAME/CALCIUM_UNBINDING_TIME_SCALE);
   }
   
 }

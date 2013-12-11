@@ -89,7 +89,6 @@ void setup() {
   println("loading "+PATH_TO_NETWORK_INFO+"cons_processing.txt ...");
   net.load_connections_from_file(PATH_TO_NETWORK_INFO+"cons_processing.txt");
 
-  // net.give_me_a_ping_vasily();
   println("go!");
 }
 
@@ -98,7 +97,7 @@ void setup() {
 
 void draw() {
   // display.better_blenddown();
-  display.simple_blenddown(3*20);
+  display.simple_blenddown(3*40);
   // display.clear();
   
   // clear firing history of this frame
@@ -119,7 +118,7 @@ void draw() {
     }
   }
 
-  display.show_neurons();
+  display.draw_neurons();
   display.display_activity_curve();
   display.display_current_time();
   display.display_frame_rate();
