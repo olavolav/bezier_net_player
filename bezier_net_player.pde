@@ -26,13 +26,12 @@ int FONT_SIZE = 26;
 String PATH_TO_NETWORK_INFO = "./";
 
 int sound;
-long frame_counter = 0;
 int FRAMES_PER_SECOND = 15;
 float MS_PER_FRAME = 2*10.0;
 // float MS_PER_FRAME = 1000./float(FRAMES_PER_SECOND); // display in real time;
-float actual_time = 0.0;
 
 Screen display;
+Controller control;
 
 String SPIKE_INDEX_FILENAME = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_index_net1_cc0_p0_w0.dat";
 String SPIKE_TIMES_FILENAME = "/Users/olav/Desktop/Doktorarbeit/Causality/multi-topologies/Middle/LambdasAdaptive/s_times_net1_cc0_p0_w0.dat";
@@ -53,6 +52,7 @@ void setup() {
   display = new Screen(800, 600);
   frameRate(FRAMES_PER_SECOND);
   strokeWeight(8);
+  control = new Controller();
   
   textFont(createFont("LucidaGrande", FONT_SIZE));
   textAlign(CENTER, CENTER);
@@ -95,17 +95,14 @@ void setup() {
 void draw() {
   // display.better_blenddown();
   display.simple_blenddown(3);
-
-  frame_counter += 1;
-  actual_time = frame_counter*MS_PER_FRAME;
   
   // net.node(int(frame_counter % NUMBER_OF_NEURONS)).blink(1);
-
+  
   // clear firing history of this frame
   fired = 0;
   
   // see if one or more neurons have spiked and if so, let them blink
-  while( (current_spike_index = reader.get_next_spike_index(actual_time)) != -1 ) {
+  while( (current_spike_index = reader.get_next_spike_index(control.real_time_in_MS)) != -1 ) {
     // neuron fires now!
     net.node(current_spike_index).blink();
     fired++;
@@ -122,8 +119,8 @@ void draw() {
   display.display_activity_curve();
   display.display_current_time();
   display.display_frame_rate();
-
   // if (record_movie) mm.addFrame();  // Add window's pixels to movie
+  control.update();
 }
 
 // -------------------------------------------------- main loop: end --------------------------------------------------

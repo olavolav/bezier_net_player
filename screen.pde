@@ -41,13 +41,13 @@ class Screen
   void display_current_time() {
     fill(#FFFFFF,100);
     textAlign(LEFT, CENTER);
-    text(str(int(actual_time))+" ms", 30, height/2);
+    text(str(int(control.real_time_in_MS))+" ms", 30, height/2);
   }
   
   void display_frame_rate() {
     fill(#FFFFFF,100);
     textAlign(LEFT, CENTER);
-    text(str(int(frameRate))+" ms", 30, height/2 + 1.4*FONT_SIZE);
+    text(str(int(frameRate))+" fps", 30, height/2 + 1.4*FONT_SIZE);
   }
   
   void simple_blenddown(int alpha) {
