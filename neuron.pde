@@ -9,8 +9,7 @@ class Neuron
   float noise_scaling_factor = 2.0;
   int frame_count_at_last_blinking = -1;
   
-  Neuron()
-  {
+  Neuron() {
     posx = posy = 0;
     cell = null;
     noise_image = null;
@@ -18,17 +17,14 @@ class Neuron
     x_sprite_dim = y_sprite_dim = 0;
   }
   
-  void set_2D_position(int posxtemp, int posytemp)
-  {
+  void set_2D_position(int posxtemp, int posytemp) {
     posx = posxtemp;
     posy = posytemp;
   }
   
-  int getPosX()
-  { return posx; }
+  int getPosX() { return posx; }
   
-  int getPosY()
-  { return posy; }
+  int getPosY() { return posy; }
 
   void blink() {
     if(frame_count_at_last_blinking == frameCount) return;

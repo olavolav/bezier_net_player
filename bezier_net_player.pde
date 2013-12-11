@@ -48,8 +48,7 @@ float SCALE_FACTOR_OF_AXON_LENGTH = 0.5;
 int i, j, k;
 Network net;
 
-void setup()
-{
+void setup() {
   display = new Screen(800, 600);
   frameRate(FRAMES_PER_SECOND);
   strokeWeight(8);
@@ -93,8 +92,7 @@ void setup()
 
 // -------------------------------------------------- main loop: start --------------------------------------------------
 
-void draw()
-{
+void draw() {
   // display.better_blenddown();
   display.simple_blenddown(3);
 
@@ -129,8 +127,7 @@ void draw()
 
 // -------------------------------------------------- main loop: end --------------------------------------------------
 
-void keyPressed()
-{
+void keyPressed() {
   // fill(0, 102, 153);
   fill(#FFFFFF);
   textAlign(CENTER, CENTER);
@@ -165,8 +162,7 @@ void keyPressed()
 }
 
 
-void stop()
-{
+void stop() {
   click[0].close();
   click[1].close();
   // click[2].close();
