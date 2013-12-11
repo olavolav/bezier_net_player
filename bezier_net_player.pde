@@ -27,7 +27,7 @@ String PATH_TO_NETWORK_INFO = "./";
 int sound;
 long frame_counter = 0;
 int FRAMES_PER_SECOND = 15;
-float MS_PER_FRAME = 5*10.0;
+float MS_PER_FRAME = 2*10.0;
 // float MS_PER_FRAME = 1000./float(FRAMES_PER_SECOND); // display in real time;
 float actual_time = 0.0;
 
@@ -57,7 +57,7 @@ void setup()
   textFont(createFont("LucidaGrande", 26));
   textAlign(CENTER, CENTER);
 
-  nradius = width/150.0;
+  nradius = width/sqrt(float(NUMBER_OF_NEURONS));
   nblurradius = width/250.0;
   noSmooth();
   background(BACKGROUND_COLOR);
@@ -85,10 +85,7 @@ void setup()
   println("loading "+PATH_TO_NETWORK_INFO+"cons_processing.txt ...");
   net.load_connections_from_file(PATH_TO_NETWORK_INFO+"cons_processing.txt");
 
-  // set internal connection arrays and create PGraphics shapes
-  println("creating cell sprites ...");
-  net.assemble_cell_sprites();
-  net.give_me_a_ping_vasily();
+  // net.give_me_a_ping_vasily();
 
   println("go!");
 }
@@ -99,12 +96,12 @@ void setup()
 void draw()
 {
   // display.better_blenddown();
-  display.simple_blenddown(3+3);
+  display.simple_blenddown(3);
 
   frame_counter += 1;
   actual_time = frame_counter*MS_PER_FRAME;
   
-  // net[int(frame_counter % NUMBER_OF_NEURONS)].display();
+  // net.node(int(frame_counter % NUMBER_OF_NEURONS)).blink(1);
 
   // clear firing history of this frame
   fired = 0;

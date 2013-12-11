@@ -46,25 +46,20 @@ class Network
     }
   }
   
-  void assemble_cell_sprites()
-  {
-    // set internal connection arrays and create PGraphics shapes
-    for (i=0; i<size; i++) {
-      int[] x2s = new int[0];
-      int[] y2s = new int[0];
-      for (j=0; j<size; j++) {
-        if ((cfrom[j]==i)&&(random(1.0)<FRACTION_OF_CONNECTIONS_SHOWN)) {
-          x2s = append(x2s, neurons[cto[j]].getPosX());
-          y2s = append(y2s, neurons[cto[j]].getPosY());
-        }
-      }
-      neurons[i].create_cell_shape(x2s, y2s, NEURON_COLOR);
-    }
-    println("creating noise sprites ...");
-    for (i=0; i<size; i++) {
-      neurons[i].create_noise_shape(width/5,height/5); //(400,400);
-    }
-  }
+  // void assemble_cell_sprites()
+  // {
+  //   // set internal connection arrays and create PGraphics shapes
+  //   for (i=0; i<size; i++) {
+  //     int[] x2s = new int[0];
+  //     int[] y2s = new int[0];
+  //     for (j=0; j<size; j++) {
+  //       if ((cfrom[j]==i)&&(random(1.0)<FRACTION_OF_CONNECTIONS_SHOWN)) {
+  //         x2s = append(x2s, neurons[cto[j]].getPosX());
+  //         y2s = append(y2s, neurons[cto[j]].getPosY());
+  //       }
+  //     }
+  //   }
+  // }
   
   void give_me_a_ping_vasily()
   {
